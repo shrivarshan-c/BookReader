@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono ,Inter} from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import Script from "next/script";
+import { EpubProvider } from "@/providers/EpubContext";
+import { ThemeProviders } from "@/providers/ThemeContext";
+import { LineHeightProvider } from "@/providers/LineHeightContext";
+import { FontSizeProvider } from "@/providers/fontSizeContext";
+import { FontNameProvider } from "@/providers/FontNameContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +18,12 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+
+const inter = Inter({
+  variable:"--font-inter",
+  subsets:["latin"],
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,11 +36,42 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} font-inter antialiased bg-grid`}
       >
+        <Script 
+          src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"
+          strategy="beforeInteractive"
+        />
+      
+
+
+    
+         <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ThemeProviders>
+<FontNameProvider>
+
+<FontSizeProvider>
+<LineHeightProvider>
+
+
+           
+    <EpubProvider>
         {children}
+        </EpubProvider>
+        </LineHeightProvider>
+
+        </FontSizeProvider>
+        </FontNameProvider>
+        </ThemeProviders>
+        </ThemeProvider>
+    
       </body>
     </html>
   );

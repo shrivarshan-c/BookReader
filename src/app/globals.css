@@ -1,26 +1,408 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&display=swap");
 @import "tailwindcss";
 
+@theme {
+  --font-title: "TheLastShuriken", sans-serif;
+  --font-heading: "Yusei Magic", sans-serif;
+  --font-body: "Yusei Magic", sans-serif;
+  --font-inter: var(--font-inter);
+}
+
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base colors */
+  --background: oklch(98.5% 0.008 95);
+  --secondary-background: oklch(97% 0.006 95);
+  --foreground: oklch(15% 0 0);
+  --main-foreground: oklch(0% 0 0);
+
+  /* Primary brand colors */
+   --main: oklch(80% 0.08 280);         
+  --main-light: oklch(80% 0.08 280);   
+  --main-dark: oklch(80% 0.08 280);
+  --navbar-light:#E3DFF2;
+  --navbar-dark:#E3DFF2;      
+
+/* 
+ --main: oklch(94% 0.02 25);      
+--main-light: oklch(96.5% 0.015 25); 
+--main-dark: oklch(90% 0.03 25);    */
+
+  /* Anime-inspired accent colors */
+  --accent-pink: oklch(70% 0.20 350);     /* Hot pink */
+  --accent-cyan: oklch(75% 0.18 200);     /* Electric cyan */
+  --accent-yellow: oklch(80% 0.15 80);    /* Bright yellow */
+  --accent-orange: oklch(75% 0.18 50);    /* Vibrant orange */
+  --accent-green: oklch(70% 0.16 150);    /* Neon green */
+  --accent-red: oklch(65% 0.22 20);       /* Pop red */
+  --accent-blue: oklch(68% 0.20 250);     /* Electric blue */
+  --accent-violet: oklch(62% 0.25 290);   /* Deep violet */
+  --accent-lightRed:#ff7a5c;
+  /* Light accent colors */
+  --accent-lightGreen: #CBDA97;
+  --accent-lightViolet: #C0B2E4;
+  --accent-lightYellow: #F9E081;
+  --accent-lightPink: #E88AA5;
+  --accent-lightCyan: #A3E3ED;
+  --accent-lightPurple: #C0C5FB;
+  --accent-lightOrange: #EDA87C;
+
+  /* Add dark mode variants */
+  .dark {
+    --accent-lightGreen: #CBDA97;
+    --accent-lightViolet: #C0B2E4;
+    --accent-lightYellow: #F9E081;
+    --accent-lightPink: #E88AA5;
+    --accent-lightCyan: #A3E3ED;
+    --accent-lightPurple: #C0C5FB;
+    --accent-lightOrange: #EDA87C;
+  }
+
+  /* Add brutal variants for light colors */
+  .brutal-lightGreen {
+    @apply border-2 bg-accent-lightGreen text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-lightViolet {
+    @apply border-2 bg-accent-lightViolet text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-lightYellow {
+    @apply border-2 bg-accent-lightYellow text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-lightPink {
+    @apply border-2 bg-accent-lightPink text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-lightCyan {
+    @apply border-2 bg-accent-lightCyan text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-lightPurple {
+    @apply border-2 bg-accent-lightPurple text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-lightOrange {
+    @apply border-2 bg-accent-lightOrange text-main-foreground rounded-md border-border shadow-shadow;
+  }
+  /* Surface colors */
+  --surface: oklch(92% 0.04 280);
+  --surface-2: oklch(88% 0.06 280);
+  --surface-3: oklch(84% 0.08 280);
+  --surface-4: oklch(60% 0.08 280);
+
+  --gray-1: oklch(92% 0.002 80);   /* light paper gray */
+--gray-2: oklch(88% 0.004 80);   /* card background */
+--gray-3: oklch(78% 0.006 80);   /* borders / dividers */
+--gray-4: oklch(60% 0.008 80);   /* muted text / icons */
+  /* Utility colors */
+  --border: oklch(20% 0 0);
+  --ring: oklch(20% 0 0);
+  --overlay: oklch(0% 0 0 / 0.8);
+  --shadow: 4px 4px 0px 0px var(--border);
+
+  /* Chart colors */
+  --chart-1: oklch(70% 0.20 250);
+  --chart-2: oklch(65% 0.22 20);
+  --chart-3: oklch(80% 0.15 80);
+  --chart-4: oklch(70% 0.16 150);
+  --chart-5: oklch(68% 0.20 310);
+  --chart-active-dot: #000;
+}
+
+.dark {
+  /* Base colors - subtle blue-tinted dark theme */
+  --background: oklch(16% 0.03 240);
+  --secondary-background: oklch(19% 0.04 240);
+  --foreground: oklch(95% 0.01 240);
+  --main-foreground: oklch(100% 0 0);
+
+  /* Primary brand colors - blue-purple tones */
+  --main:oklch(28% 0.08 260);          
+  --main-light: oklch(32% 0.08 260);     
+  --main-dark: oklch(24% 0.08 260);
+
+  /* Enhanced accent colors for dark mode */
+  --accent-pink: oklch(80% 0.25 350);     /* Neon pink */
+  --accent-cyan: oklch(85% 0.22 200);     /* Glowing cyan */
+  --accent-yellow: oklch(88% 0.20 80);    /* Electric yellow */
+  --accent-orange: oklch(82% 0.22 50);    /* Blazing orange */
+  --accent-green: oklch(78% 0.20 150);    /* Radioactive green */
+  --accent-red: oklch(75% 0.26 20);       /* Laser red */
+  --accent-blue: oklch(78% 0.24 250);     /* Cyber blue */
+  --accent-violet: oklch(72% 0.30 290);   /* Mystic violet */
+
+  /* Surface colors - subtle blue-gray */
+  --surface: oklch(22% 0.03 240);
+  --surface-2: oklch(25% 0.04 240);
+  --surface-3: oklch(28% 0.05 240);
+
+  /* Utility colors - soft blue-tinted borders */
+  --border: oklch(85% 0.02 240);
+  --ring: oklch(95% 0 0);
+  --shadow: 4px 4px 0px 0px var(--border);
+
+  /* Enhanced chart colors for dark mode */
+  --chart-1: oklch(78% 0.24 250);
+  --chart-2: oklch(75% 0.26 20);
+  --chart-3: oklch(88% 0.20 80);
+  --chart-4: oklch(78% 0.20 150);
+
+:root {
+  /* Other variables... */
+  --navbar-light: #E3DFF2;
+  --navbar-dark: #E3DFF2;    
+}
+
+.dark {
+  /* Other dark mode variables... */
+  --navbar-light: #E3DFF2;  /* Define direct value instead of self-reference */
+  --navbar-dark: #E3DFF2;   /* Define direct value instead of self-reference */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Other theme variables... */
+  --color-navbar-light: var(--navbar-light);  /* Add color- prefix for consistency */
+  --color-navbar-dark: var(--navbar-dark);    /* Add color- prefix for consistency */
+}  --chart-active-dot: #fff;
+
+  --navbar-light: var(--navbar-light);
+  --navbar-dark: var(--navbar-dark);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme inline {
+  /* Base colors */
+  --color-main: var(--main);
+  --color-main-light: var(--main-light);
+  --color-main-dark: var(--main-dark);
+  --color-background: var(--background);
+  --color-secondary-background: var(--secondary-background);
+  --color-foreground: var(--foreground);
+  --color-main-foreground: var(--main-foreground);
+
+  /* Accent colors */
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-yellow: var(--accent-yellow);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-green: var(--accent-green);
+  --color-accent-red: var(--accent-red);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-violet: var(--accent-violet);
+  --color-accent-lightRed: var(--accent-lightRed);
+  --color-accent-lightGreen: var(--accent-lightGreen);
+  --color-accent-lightViolet: var(--accent-lightViolet);
+  --color-accent-lightYellow: var(--accent-lightYellow);
+  --color-accent-lightPink: var(--accent-lightPink);
+  --color-accent-lightCyan: var(--accent-lightCyan);
+  --color-accent-lightPurple: var(--accent-lightPurple);
+  --color-accent-lightOrange: var(--accent-lightOrange);
+  /* Surface colors */
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+   --color-surface-4: var(--surface-4);
+
+   --navbar-light: var(--navbar-light);
+   --navbar-dark: var(--navbar-dark);
+  /* Utility colors */
+  --color-border: var(--border);
+  --color-overlay: var(--overlay);
+  --color-ring: var(--ring);
+
+  /* Chart colors */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --spacing-boxShadowX: 4px;
+  --spacing-boxShadowY: 4px;
+  --spacing-reverseBoxShadowX: -4px;
+  --spacing-reverseBoxShadowY: -4px;
+  --radius-base: 5px;
+  --shadow-shadow: var(--shadow);
+  --font-weight-base: 500;
+  --font-weight-heading: 700;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply text-foreground bg-background font-body;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Enhanced brutalist styles with color variants */
+  .brutal {
+    @apply border-2 bg-secondary-background text-foreground rounded-md border-border shadow-shadow;
+  }
+
+  /* Accent color variants */
+  .brutal-pink {
+    @apply border-2 bg-accent-pink text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-cyan {
+    @apply border-2 bg-accent-cyan text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-yellow {
+    @apply border-2 bg-accent-yellow text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-orange {
+    @apply border-2 bg-accent-orange text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-green {
+    @apply border-2 bg-accent-green text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-red {
+    @apply border-2 bg-accent-red text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-blue {
+    @apply border-2 bg-accent-blue text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-violet {
+    @apply border-2 bg-accent-violet text-main-foreground rounded-md border-border shadow-shadow;
+  }
+
+  /* Surface variants */
+  .brutal-surface {
+    @apply border-2 bg-surface text-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-surface-2 {
+    @apply border-2 bg-surface-2 text-foreground rounded-md border-border shadow-shadow;
+  }
+
+  .brutal-surface-3 {
+    @apply border-2 bg-surface-3 text-foreground rounded-md border-border shadow-shadow;
+  }
+
+  /* Hover effects for interactive elements */
+  .brutal-hover {
+    @apply transition-all duration-150 hover:translate-x-1 hover:translate-y-1 hover:shadow-none;
+  }
+
+  /* Glow effects for dark mode */
+  .dark .brutal-pink {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-pink) 30%, transparent);
+  }
+
+  .dark .brutal-cyan {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-cyan) 30%, transparent);
+  }
+
+  .dark .brutal-yellow {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-yellow) 30%, transparent);
+  }
+
+  .dark .brutal-orange {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-orange) 30%, transparent);
+  }
+
+  .dark .brutal-green {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-green) 30%, transparent);
+  }
+
+  .dark .brutal-red {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-red) 30%, transparent);
+  }
+
+  .dark .brutal-blue {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-blue) 30%, transparent);
+  }
+
+  .dark .brutal-violet {
+    box-shadow: 4px 4px 0px 0px var(--border), 0 0 20px color-mix(in oklch, var(--accent-violet) 30%, transparent);
+  }
+}
+
+/* globals.css */
+html, body {
+  overflow-x: clip;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Enhanced grid background with subtle color */
+.bg-grid {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--main) 50%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--main) 50%, transparent) 1px, transparent 1px);
+  background-size: 75px 75px;
+}
+
+/* Anime-style gradient backgrounds */
+.bg-anime-gradient {
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan), var(--accent-violet));
+}
+
+.bg-anime-gradient-2 {
+  background: linear-gradient(45deg, var(--accent-yellow), var(--accent-orange), var(--accent-red));
+}
+
+.bg-anime-gradient-3 {
+  background: linear-gradient(225deg, var(--accent-blue), var(--main), var(--accent-green));
+}
+
+@keyframes upsideDownPendulum {
+  0%   { transform: rotate(12deg); }
+
+  50%  { transform: rotate(0deg); }
+
+  100% { transform: rotate(12deg); }
+}
+
+.animate-upside-pendulum {
+  animation: upsideDownPendulum 2s ease-in-out infinite;
+  transform-origin: bottom center; /* pivot from bottom, swings above */
+  will-change: transform;
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
 }
