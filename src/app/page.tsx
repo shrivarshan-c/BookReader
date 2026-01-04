@@ -12,6 +12,8 @@ export default function Home() {
       <Features />
       <MostPopular />
       <Quote1/>
+      <MostPopular />
+
     </>
   );
 }
