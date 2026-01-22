@@ -34,10 +34,15 @@ export const MusicPanel = ({isOpen,setIsOpen}:{
   const playTrack = (playlist: Playlist, trackIndex: number) => {
     if (audioRef.current) {
       audioRef.current.src = playlist.tracks[trackIndex].src;
-      audioRef.current.play().catch(err => console.error('Play error:', err));
-      setIsPlaying(true);
-      setActivePlaylist(playlist);
-      setCurrentTrack(trackIndex);
+      audioRef.current.load();
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+        setActivePlaylist(playlist);
+        setCurrentTrack(trackIndex);
+      }).catch(err => {
+        console.error('Play error:', err);
+        setIsPlaying(false);
+      });
     }
   };
 

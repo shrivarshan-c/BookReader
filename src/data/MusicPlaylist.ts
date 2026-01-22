@@ -333,6 +333,11 @@ export const studyPlaylist: Playlist = {
     { id: 18, title: "Study 18", artist: "Focus Music", src: "/music/study18.mp3" },
     { id: 19, title: "Study 19", artist: "Focus Music", src: "/music/study19.mp3" },
     { id: 20, title: "Study 20", artist: "Focus Music", src: "/music/study20.mp3" },
+    { id: 21, title: "Study 21", artist: "Focus Music", src: "/music/study21.mp3" },
+      { id: 22, title: "Study 22", artist: "Focus Music", src: "/music/study22.mp3" },
+      { id: 23, title: "Study 23", artist: "Focus Music", src: "/music/study23.mp3" },  
+       { id: 24, title: "Study 24", artist: "Focus Music", src: "/music/study24.mp3" },
+          { id: 25, title: "Study 25", artist: "Focus Music", src: "/music/study25.mp3" },
   ],
 };
 
