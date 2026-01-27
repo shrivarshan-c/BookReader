@@ -22,7 +22,7 @@ export default function Library() {
                     <IconHome size={24} />
                     <span className="font-semibold dark:text-black ">Home</span>
                 </Link>
-                
+
                 <button
                     onClick={() => setSelectedSection("all-books")}
                     className={`flex items-center gap-3 p-3 rounded-lg transition-all border-2 border-border ${

@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import { Button } from "@/components/ui/NeoBrutalismButton"
 import { IconBook } from "@tabler/icons-react"
 import { useRouter } from "next/navigation"

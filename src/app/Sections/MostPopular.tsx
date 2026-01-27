@@ -26,6 +26,7 @@ export const MostPopular = ()=>{
             }, 30);
         };
 
+        
         startScroll();
 
         return () => {
