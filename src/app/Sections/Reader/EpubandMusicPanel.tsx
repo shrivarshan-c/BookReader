@@ -121,11 +121,11 @@ export const EpubAndMusicPanel = () => {
                         className="absolute bottom-full left-0 mb-2 bg-white dark:bg-surface-2 border dark:border-border rounded-lg shadow p-2 z-30"
                       >
                         <div className="flex items-center gap-2">
-                          <Button onClick={() => setFontSize(v => Math.max(12, v - 2))}>
+                          <Button onClick={() => setFontSize((v: number) => Math.max(12, v - 2))}>
                             <IconMinus />
                           </Button>
                           <span className="w-8 text-center">{fontSize}</span>
-                          <Button onClick={() => setFontSize(v => Math.min(32, v + 2))}>
+                          <Button onClick={() => setFontSize((v: number) => Math.min(32, v + 2))}>
                             <IconPlus />
                           </Button>
                         </div>
@@ -151,11 +151,11 @@ export const EpubAndMusicPanel = () => {
                         className="absolute bottom-full left-0 mb-2 bg-white dark:bg-surface-2 border dark:border-border rounded-lg shadow p-2 z-30"
                       >
                         <div className="flex items-center gap-2">
-                          <Button onClick={() => setLineHeightValue(v => Math.max(1.2, v - 0.2))}>
+                          <Button onClick={() => setLineHeightValue((v: number) => Math.max(1.2, v - 0.2))}>
                             <IconMinus />
                           </Button>
                           <span>{lineHeight.toFixed(1)}</span>
-                          <Button onClick={() => setLineHeightValue(v => Math.min(2.4, v + 0.2))}>
+                          <Button onClick={() => setLineHeightValue((v: number) => Math.min(2.4, v + 0.2))}>
                             <IconPlus />
                           </Button>
                         </div>

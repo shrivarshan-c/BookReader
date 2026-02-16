@@ -57,7 +57,7 @@ export default function Library() {
             <div className="flex-1 overflow-y-auto p-8">
                 <div className="max-w-7xl mx-auto">
                     <h1 className="text-4xl font-bold mb-8">
-                        {selectedSection === "all-books" ? "All Books" : "My    Books"}
+                        {selectedSection === "all-books" ? "All Books" : "My Books"}
                     </h1>
 
                     {selectedSection === "all-books" ? (
