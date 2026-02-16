@@ -23,11 +23,11 @@ export const EpubReader = ({ bookEpub }: { bookEpub: string })=>{
 
     useEffect(() => {
         if (typeof window !== 'undefined' && viewerRef.current) {
-         // Reset page numbers when switching books
          setCurrentPage(1);
          setTotalPages(0);
          setToc([]);
-         
+                                                                                 
+            
          const book = ePub(bookEpub);
        const rendition = book.renderTo(viewerRef.current, {
                 width: "100%",
@@ -37,35 +37,27 @@ export const EpubReader = ({ bookEpub }: { bookEpub: string })=>{
             });
             
             rendition.display();
-
             RenditionRef.current = rendition;
        
             book.loaded.navigation.then((nav: any) => {
                 setToc(nav.toc);
             });
 
-            book.ready.then(()=>{
-              book.locations.generate(1000).then((locations: any) => {
-                const total = locations.total || (locations as any)._locations?.length || 0;
-                setTotalPages(total);
-                
-                // Set initial page after locations are generated
-                const currentLoc = rendition.currentLocation();
-                if (currentLoc && locations._locations) {
-                  const currentLocation = locations.locationFromCfi(currentLoc.start.cfi);
-                  setCurrentPage(currentLocation || 1);
-                }
-              }).catch((err: any) => {
-                console.error('Error generating locations:', err);
-              });
-            });
-
             rendition.on('relocated', (location: any) => {
                 const locations = book.locations as any;
-                if (locations && locations._locations && locations._locations.length > 0) {
+                if (locations?._locations?.length > 0) {
                     const currentLocation = locations.locationFromCfi(location.start.cfi);
                     setCurrentPage(currentLocation || 1);
+                    setTotalPages(locations._locations.length);
                 }
+            });
+
+            book.ready.then(() => {
+              return book.locations.generate(1000);
+            }).then((locations: any) => {
+                setTotalPages(locations._locations?.length || 0);
+            }).catch((err: any) => {
+                console.error('Error:', err);
             });
 
             return () => {
