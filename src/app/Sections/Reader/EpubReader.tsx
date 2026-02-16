@@ -46,10 +46,15 @@ export const EpubReader = ({ bookEpub }: { bookEpub: string })=>{
 
             book.ready.then(()=>{
               book.locations.generate(1000).then((locations: any) => {
-                console.log('Locations object:', locations);
                 const total = locations.total || (locations as any)._locations?.length || 0;
-                console.log('Total pages:', total);
                 setTotalPages(total);
+                
+                // Set initial page after locations are generated
+                const currentLoc = rendition.currentLocation();
+                if (currentLoc && locations._locations) {
+                  const currentLocation = locations.locationFromCfi(currentLoc.start.cfi);
+                  setCurrentPage(currentLocation || 1);
+                }
               }).catch((err: any) => {
                 console.error('Error generating locations:', err);
               });
@@ -60,11 +65,6 @@ export const EpubReader = ({ bookEpub }: { bookEpub: string })=>{
                 if (locations && locations._locations && locations._locations.length > 0) {
                     const currentLocation = locations.locationFromCfi(location.start.cfi);
                     setCurrentPage(currentLocation || 1);
-                    
-                    // Update total pages if not set
-                    if (!locations.total) {
-                        setTotalPages(locations._locations.length);
-                    }
                 }
             });
 
