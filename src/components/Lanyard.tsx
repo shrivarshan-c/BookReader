@@ -10,7 +10,8 @@ import {
   RigidBody,
   useRopeJoint,
   useSphericalJoint,
-  RigidBodyProps
+  RigidBodyProps,
+  RapierRigidBody
 } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
@@ -31,19 +32,13 @@ export default function Lanyard({
   transparent = true
 }: LanyardProps) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const handleResize = (): void => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  if (!mounted) {
-    return <div className="relative z-0 w-full h-screen flex justify-center items-center bg-blue-100 animate-pulse" />;
-  }
 
   return (
     <div className="relative z-0 w-full h-full flex justify-center items-start">
@@ -101,19 +96,21 @@ interface BandProps {
 }
 
 function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
-  const band = useRef<any>(null);
-  const fixed = useRef<any>(null);
-  const j1 = useRef<any>(null);
-  const j2 = useRef<any>(null);
-  const j3 = useRef<any>(null);
-  const card = useRef<any>(null);
+  const band = useRef<THREE.Mesh>(null);
+  const fixed = useRef<RapierRigidBody>(null);
+  const j1 = useRef<RapierRigidBody>(null);
+  const j2 = useRef<RapierRigidBody>(null);
+  const j3 = useRef<RapierRigidBody>(null);
+
+  const card = useRef<RapierRigidBody>(null);
+  
 
   const vec = new THREE.Vector3();
   const ang = new THREE.Vector3();
   const rot = new THREE.Vector3();
   const dir = new THREE.Vector3();
 
-  const segmentProps: any = {
+  const segmentProps: Partial<RigidBodyProps> = {
     type: 'dynamic' as RigidBodyProps['type'],
     canSleep: true,
     colliders: false,
@@ -157,10 +154,10 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     return () => clearInterval(interval);
   }, [genres.length]);
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
-  useSphericalJoint(j3, card, [
+  useRopeJoint(fixed as any, j1 as any, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j1 as any, j2 as any, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j2 as any, j3 as any, [[0, 0, 0], [0, 0, 0], 1]);
+  useSphericalJoint(j3 as any, card as any, [
     [0, 0, 0],
     [0, 1.45, 0]
   ]);
@@ -188,24 +185,30 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     }
     if (fixed.current) {
       [j1, j2].forEach(ref => {
-        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
-        const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
-        ref.current.lerped.lerp(
-          ref.current.translation(),
-          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
-        );
+        if (ref.current) {
+          if (!(ref.current as any).lerped) {
+            (ref.current as any).lerped = new THREE.Vector3().copy(ref.current.translation());
+          }
+          const clampedDistance = Math.max(0.1, Math.min(1, (ref.current as any).lerped.distanceTo(ref.current.translation())));
+          (ref.current as any).lerped.lerp(
+            ref.current.translation(),
+            delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
+          );
+        }
       });
-      curve.points[0].copy(j3.current.translation());
-      curve.points[1].copy(j2.current.lerped);
-      curve.points[2].copy(j1.current.lerped);
-      curve.points[3].copy(fixed.current.translation());
-      if (band.current?.geometry) {
-        band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
+      if (j3.current && j2.current && j1.current) {
+        curve.points[0].copy(j3.current.translation());
+        curve.points[1].copy((j2.current as any).lerped);
+        curve.points[2].copy((j1.current as any).lerped);
+        curve.points[3].copy(fixed.current.translation());
+        if (band.current?.geometry && 'setPoints' in band.current.geometry) {
+          (band.current.geometry as any).setPoints(curve.getPoints(isMobile ? 16 : 32));
+        }
       }
       if (card.current) {
         ang.copy(card.current.angvel());
         rot.copy(card.current.rotation());
-        card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+        card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, true);
       }
     }
   });
@@ -237,13 +240,16 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
             position={[0, -1.4, -0.02]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
-            onPointerUp={(e: any) => {
-              e.target.releasePointerCapture(e.pointerId);
+            onPointerUp={(e) => {
+              const target = e.target as any;
+              target.releasePointerCapture(e.nativeEvent.pointerId);
               drag(false);
             }}
-            onPointerDown={(e: any) => {
-              e.target.setPointerCapture(e.pointerId);
-              drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
+            onPointerDown={(e) => {
+              const target = e.target as any;
+              const point = (e as any).point;
+              target.setPointerCapture(e.nativeEvent.pointerId);
+              drag(new THREE.Vector3().copy(point).sub(vec.copy(card.current!.translation())));
             }}
           >
             <mesh geometry={cardGeometry} material={cardMaterial} />
@@ -334,13 +340,13 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
         </RigidBody>
       </group>
       <mesh ref={band}>
-        <meshLineGeometry />
-        <meshLineMaterial
-          color="white"
-          depthTest={false}
-          resolution={isMobile ? [1000, 2000] : [1000, 1000]}
-          lineWidth={8}
-        />
+        <primitive object={new MeshLineGeometry()} />
+        <primitive object={new MeshLineMaterial({ 
+          color: "white",
+          depthTest: false,
+          resolution: new THREE.Vector2(isMobile ? 1000 : 1000, isMobile ? 2000 : 1000),
+          lineWidth: 8
+        })} />
       </mesh>
     </>
   );
