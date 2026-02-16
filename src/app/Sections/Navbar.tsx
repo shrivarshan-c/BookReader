@@ -5,8 +5,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/NeoBrutalismButton";
 import { IconMenu2, IconMoon, IconSun, IconXboxX } from "@tabler/icons-react";
 import React from "react";
-
+import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "next-themes";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 
 export const Navbar = () => {
   const [isVisible, setIsVisible] = React.useState(true);
@@ -51,8 +52,9 @@ export const Navbar = () => {
 
 export const MobileNavbar = () => {
   const [open, setOpen] = React.useState(false);
-
+  const { isSignedIn } = useUser();
   const { theme, setTheme } = useTheme();
+  
   return (
     <div className="flex justify-between items-center w-full max-w-2xl mx-auto relative">
       <h1 className="text-2xl px-6 rounded-tl-xl rounded-br-xl p-1 font-bold font-heading shadow-shadow bg-background">
@@ -64,39 +66,61 @@ export const MobileNavbar = () => {
           <IconMenu2 />
         </Button>
 
-        {open && (
-          <div className="absolute top-12 w-48 right-0 bg-surface shadow-shadow border-border border-2 rounded-md p-4 flex flex-col items-baseline gap-4 z-50">
-            <p className="font-heading text-lg">Features</p>
-            <p className="font-heading text-lg">Explore</p>
-            <Button variant="neutral" className="w-fit">
-              SignUp
-            </Button>
-            <Button variant="neutral" className="w-fit">
-              Login
-            </Button>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-12 w-48 right-0 bg-surface shadow-shadow border-border border-2 rounded-md p-4 flex flex-col items-baseline gap-4 z-50"
+            >
+              <p className="font-heading text-lg">Features</p>
+              <p className="font-heading text-lg">Explore</p>
+              
+              {isSignedIn ? (
+                <UserButton afterSignOutUrl="/" />
+              ) : (
+                <>
+                  <SignUpButton mode="modal">
+                    <Button variant="neutral" className="w-fit">
+                      SignUp
+                    </Button>
+                  </SignUpButton>
+                  
+                  <SignInButton mode="modal">
+                    <Button variant="neutral" className="w-fit">
+                      Login
+                    </Button>
+                  </SignInButton>
+                </>
+              )}
 
-            {theme === "dark" ? (
-              <Button variant="neutral" onClick={() => setTheme("light")}>
-                <IconSun />
-              </Button>
-            ) : (
-              <Button variant="neutral" onClick={() => setTheme("dark")}>
-                <IconMoon />
-              </Button>
-            )}
+              {theme === "dark" ? (
+                <Button variant="neutral" onClick={() => setTheme("light")}>
+                  <IconSun />
+                </Button>
+              ) : (
+                <Button variant="neutral" onClick={() => setTheme("dark")}>
+                  <IconMoon />
+                </Button>
+              )}
 
-            <Button onClick={() => setOpen(!open)}>
-              <IconXboxX />
-            </Button>
-          </div>
-        )}
+              <Button onClick={() => setOpen(!open)}>
+                <IconXboxX />
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
 };
 
 export const DesktopNavbar = () => {
+  const { isSignedIn } = useUser();
   const { theme, setTheme } = useTheme();
+  
   return (
     <>
       <h1 className="text-2xl px-6 rounded-tl-xl rounded-br-xl p-1 font-bold font-heading shadow-shadow bg-background">
@@ -109,12 +133,23 @@ export const DesktopNavbar = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="neutral" className="mr-2">
-          SignUp
-        </Button>
-        <Button variant="neutral" className="">
-          Login
-        </Button>
+        {isSignedIn ? (
+          <UserButton afterSignOutUrl="/" />
+        ) : (
+          <>
+            <SignUpButton mode="modal">
+              <Button variant="neutral" className="mr-2">
+                SignUp
+              </Button>
+            </SignUpButton>
+
+            <SignInButton mode="modal">
+              <Button variant="neutral" className="">
+                Login
+              </Button>
+            </SignInButton>
+          </>
+        )}
 
         {theme === "dark" ? (
           <Button variant="neutral" onClick={() => setTheme("light")}>

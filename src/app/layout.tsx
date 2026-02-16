@@ -8,6 +8,7 @@ import { ThemeProviders } from "@/providers/ThemeContext";
 import { LineHeightProvider } from "@/providers/LineHeightContext";
 import { FontSizeProvider } from "@/providers/fontSizeContext";
 import { FontNameProvider } from "@/providers/FontNameContext";
+import { ClerkProvider } from '@clerk/nextjs'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +47,7 @@ export default function RootLayout({
         />
       
 
-
+<ClerkProvider>
     
          <ThemeProvider
             attribute="class"
@@ -72,6 +73,7 @@ export default function RootLayout({
         </ThemeProviders>
         </ThemeProvider>
     
+    </ClerkProvider>
       </body>
     </html>
   );

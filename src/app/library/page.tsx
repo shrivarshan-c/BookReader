@@ -4,11 +4,21 @@ import { CardComponents } from "../Sections/MostPopular";
 import { useState } from "react";
 import { IconHome, IconBook, IconUpload } from "@tabler/icons-react";
 import Link from "next/link";
-import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Library() {
+    const { isLoaded, isSignedIn } = useUser();
+    const router = useRouter();
     const [selectedGenre, setSelectedGenre] = useState<string>("All");
     const [selectedSection, setSelectedSection] = useState<string>("all-books");
+    
+    if (!isLoaded) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+    if (!isSignedIn) {
+        router.push("/sign-in");
+        return null;
+    }
     
     const genres = ["All", ...Array.from(new Set(books.map(book => book.genre)))];
     const filteredBooks = selectedGenre === "All" ? books : books.filter(book => book.genre === selectedGenre);
