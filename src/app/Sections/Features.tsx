@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Laptop from "../../../public/laptop2.png";
+import Laptop from "../../../public/laptop.png";
 import { useState, useEffect } from "react";
 import {
   HeroSvg5,
