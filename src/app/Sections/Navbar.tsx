@@ -128,10 +128,8 @@ export const DesktopNavbar = () => {
       </h1>
 
       <div className="flex gap-4">
-        <p className="font-heading text-xl ">Features</p>
-        <p className="font-heading text-xl  ">Explore</p>
-      </div>
-
+  <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: window.innerHeight, behavior: 'smooth' }); }} className="font-heading text-xl cursor-pointer hover:opacity-80 transition-opacity">Features</a>
+  <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: window.innerHeight * 2, behavior: 'smooth' }); }} className="font-heading text-xl cursor-pointer hover:opacity-80 transition-opacity">Explore</a></div>
       <div className="flex items-center gap-2">
         {isSignedIn ? (
           <UserButton afterSignOutUrl="/" />
